@@ -1,0 +1,58 @@
+# Environment
+.env
+.env.local
+.env*.local
+*.key
+*.pem
+
+# Secrets
+secrets/
+credentials/
+
+# Brain data (private SecondBrain instances)
+brain/
+secondbrain/
+*.brain
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node/npm (if applicable)
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
