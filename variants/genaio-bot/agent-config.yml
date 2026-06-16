@@ -1,0 +1,99 @@
+# GeniBot — Agent Configuration
+# Full Claude agent with Telegram integration
+
+agent:
+  name: GeniBot
+  role: genaio-project-assistant
+  description: "AI strategist for GENAIO.org project"
+
+# Model & reasoning
+model:
+  provider: claude
+  name: claude-opus-4-8  # Latest for reasoning
+  temperature: 0.7      # Creative but coherent
+  max_tokens: 2000
+
+# Knowledge source
+brain:
+  path: ${GENAIO_BRAIN_PATH:-./brain}
+  structure: PARA
+  search: true          # Index and search brain docs
+  memory_retention: conversation  # Remember this session
+
+# Telegram integration
+integrations:
+  telegram:
+    enabled: true
+    token: ${TELEGRAM_BOT_TOKEN}
+    webhook:
+      url: ${TELEGRAM_WEBHOOK_URL}  # e.g., https://your-vps/genaio-bot/telegram
+      port: 8003
+
+    features:
+      - receive_messages
+      - send_messages
+      - edit_messages
+      - send_documents
+      - inline_queries  # Future: search brain from inline
+
+    rate_limit:
+      messages_per_minute: 10
+      user_message_timeout: 30s
+
+# System prompt
+system_prompt: |
+  You are GeniBot, GENAIO's strategic project assistant.
+
+  Your role:
+  - Analyze the GENAIO project knowledge base (brain)
+  - Provide strategic insights and recommendations
+  - Help prioritize and execute decisions
+  - Keep the team aligned on vision and progress
+  - Think creatively about challenges and opportunities
+
+  When answering:
+  1. Read relevant docs from the brain
+  2. Analyze the context deeply
+  3. Consider strategic implications
+  4. Provide actionable recommendations
+  5. Suggest next steps
+
+  Be concise but thorough. Use data from the brain.
+  If you update understanding, suggest documenting it.
+
+# Personality traits
+personality:
+  tone: "collaborative, strategic, creative"
+  style: "clear, actionable, forward-thinking"
+  emoji_use: "minimal, meaningful"
+
+# Response formatting
+responses:
+  max_length: 2000  # Telegram message limit
+  cite_sources: true  # Link to brain docs
+  suggest_actions: true  # "Next: Update roadmap"
+
+# Logging
+logging:
+  level: info
+  telegram_messages: true
+  reasoning_trace: true
+
+# Security
+security:
+  allowed_users:
+    - ${ADMIN_TELEGRAM_ID}  # Robin
+    - ${PARTNER_TELEGRAM_ID}  # Partner
+
+  restricted_actions:
+    - delete_brain_docs
+    - modify_core_settings
+
+  audit_log: true
+
+# Scheduled tasks
+scheduling:
+  enabled: false  # For now, respond to messages only
+  # Future:
+  # daily_briefing: "08:00"
+  # weekly_summary: "friday 18:00"
