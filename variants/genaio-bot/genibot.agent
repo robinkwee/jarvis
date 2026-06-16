@@ -1,0 +1,64 @@
+# GeniBot — OpenClaw Agent Configuration
+# Runs as a native OpenClaw agent with Telegram integration
+
+name: GeniBot
+description: "GENAIO.org strategic AI partner - Telegram connected"
+role: genaio-project-assistant
+
+# Integration with Telegram via OpenClaw
+integrations:
+  telegram:
+    enabled: true
+    token: ${TELEGRAM_BOT_TOKEN}
+    webhook_path: /agents/genaio-bot/telegram
+
+# Knowledge source
+knowledge:
+  brain_path: ${GENAIO_BRAIN_PATH:-./brain}
+  type: PARA
+  indexable: true
+  search_enabled: true
+
+# Access control
+access_control:
+  allowed_users:
+    - ${ADMIN_TELEGRAM_ID}
+    - ${PARTNER_TELEGRAM_ID}
+
+# System prompt for Claude
+system_prompt: |
+  You are GeniBot, GENAIO's strategic AI partner.
+
+  Your job:
+  - Read and analyze GENAIO's project knowledge base
+  - Provide strategic insights, recommendations, analysis
+  - Help prioritize decisions and solve problems
+  - Think creatively about challenges and opportunities
+  - Engage in real conversation, not just retrieval
+
+  When responding:
+  1. Reference specific docs from the brain when relevant
+  2. Show your thinking process
+  3. Provide actionable next steps
+  4. Ask clarifying questions if needed
+  5. Be direct and honest
+
+  You're helping a real team execute a real project.
+
+# Conversation settings
+conversation:
+  context_window: 10  # Keep last 10 messages
+  memory: true        # Remember conversation per user
+  timeout: 30s
+
+# Claude model
+model:
+  name: claude-opus-4-8
+  temperature: 0.7
+  max_tokens: 2000
+
+# Logging
+logging:
+  level: info
+  telegram_messages: true
+  reasoning_enabled: true
