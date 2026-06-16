@@ -1,0 +1,33 @@
+services:
+  genaio-bot:
+    image: python:3.11-slim
+    container_name: genaio-bot
+    command: python -m http.server 8000 --directory /brain/secondbrain
+    ports:
+      - "8003:8000"
+    environment:
+      - AGENT_NAME=GeniBot
+      - AGENT_ROLE=genaio-project
+      - BRAIN_PATH=/brain/secondbrain
+      - LOG_LEVEL=info
+    volumes:
+      # Mount your GENAIO brain
+      - ${GENAIO_BRAIN_PATH:-./brain}:/brain/secondbrain
+      # Mount config
+      - ./config:/app/config
+    mem_reservation: 1g       # Soft limit - releases unused memory to OS
+    mem_limit: 1.5g           # Hard cap - won't exceed this
+    cpus: '0.5'
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - genaio-net
+
+networks:
+  genaio-net:
+    driver: bridge
